@@ -300,6 +300,16 @@ class DataAccess extends CI_Model {
 		return $lesFiches;
 	}
 
+  public function getFichesComptable ($mois) {
+    $req = "select idVisiteur, mois, montantValide, dateModif, id, libelle
+				from  fichefrais inner join Etat on ficheFrais.idEtat = Etat.id
+        where mois = '$mois'
+				order by mois desc";
+    $rs = $this->db->query($req);
+    $lesFiches = $rs->result_array();
+    return $lesFiches;
+  }
+
 	/**
 	 * Calcule le montant total de la fiche pour un visiteur et un mois donnés
 	 *
