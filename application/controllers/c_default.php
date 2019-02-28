@@ -45,18 +45,15 @@ class C_default extends CI_Controller {
 
 		$authUser = $this->authentif->authentifier($login, $mdp);
 
-		if(empty($authUser))
+		if(empty($authUser) || $authUser['statut'] == null)
 		{
 			$data = array('erreur'=>'Login ou mot de passe incorrect');
 			$this->templates->load('t_connexion', 'v_connexion', $data);
 		}
 		else
 		{
-			if ($authUser['statut'] != null)
-			{
-				$this->authentif->connecter($authUser['id'], $authUser['nom'], $authUser['prenom'], $authUser['statut']);
-				$this->index();
-			}
+			$this->authentif->connecter($authUser['id'], $authUser['nom'], $authUser['prenom'], $authUser['statut']);
+			$this->index();
 		}
 	}
 
