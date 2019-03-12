@@ -117,25 +117,10 @@ class C_visiteur extends CI_Controller {
 				// Avant modification des données, on vérifie que les données sont valides (les nombres sont entiers)
 				$patter = "";
 				foreach ($lesFrais as $key => $value) {
-					if(preg_match("/\d*/", $value)){
-						if(preg_match("/\[.,\]/", $value)){
-											$this->a_visiteur->majForfait($idVisiteur, $mois, $lesFrais);
-											// ... et on revient en modification de la fiche
-											$this->a_visiteur->modFiche($idVisiteur, $mois, 'Modification(s) des éléments forfaitisés enregistrée(s) ...');
-						}else {
-							// ... et on revient en modification de la fiche
-							$this->a_visiteur->modFiche($idVisiteur, $mois, 'Modification(s) des éléments forfaitisés non enregistrée(s) valeurs numériques non entières ...');
-						}
-					}else{
-						// ... et on revient en modification de la fiche
-						$this->a_visiteur->modFiche($idVisiteur, $mois, 'Modification(s) des éléments forfaitisés non enregistrée(s) valeurs numériques non entières ...');
-					}
+					$this->a_visiteur->majForfait($idVisiteur, $mois, $lesFrais);
+					// ... et on revient en modification de la fiche
+					$this->a_visiteur->modFiche($idVisiteur, $mois, 'Modification(s) des éléments forfaitisés enregistrée(s) ...');
 				}
-
-				$this->a_visiteur->majForfait($idVisiteur, $mois, $lesFrais);
-
-				// ... et on revient en modification de la fiche
-				$this->a_visiteur->modFiche($idVisiteur, $mois, 'Modification(s) des éléments forfaitisés enregistrée(s) ...');
 			}
 			elseif ($action == 'ajouteFrais') // ajouteLigneFrais demandé : on active la fonction ajouteLigneFrais du modèle visiteur ...
 			{	// TODO : conrôler que l'obtention des données postées ne rend pas d'erreurs
