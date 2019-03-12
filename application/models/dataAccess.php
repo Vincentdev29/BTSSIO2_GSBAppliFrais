@@ -20,7 +20,11 @@ class DataAccess extends CI_Model {
 	 * @return l'id, le nom et le prénom sous la forme d'un tableau associatif
 	*/
 	public function getInfosVisiteur($login, $mdp){
+<<<<<<< HEAD
 		$req = "select visiteur.id as id, visiteur.nom as nom, visiteur.prenom as prenom, visiteur.statut as statut
+=======
+		$req = "select visiteur.id as id, visiteur.nom as nom, visiteur.prenom as prenom
+>>>>>>> correction_validation
 				from visiteur
 				where visiteur.login=? and visiteur.mdp=?";
 		$rs = $this->db->query($req, array ($login, $mdp));
@@ -209,7 +213,7 @@ class DataAccess extends CI_Model {
 	public function creeLigneHorsForfait($idVisiteur,$mois,$libelle,$date,$montant){
 		$this->load->model('functionsLib');
 
-		$dateFr = $this->functionsLib->dateFrancaisVersAnglais($date);
+		$dateFr = $this->functionsLib->dateNoFormat($date);
 		$req = "insert into lignefraishorsforfait
 				values('','$idVisiteur','$mois','$libelle','$dateFr','$montant')";
 		$this->db->simple_query($req);
@@ -300,6 +304,7 @@ class DataAccess extends CI_Model {
 		return $lesFiches;
 	}
 
+<<<<<<< HEAD
   public function getFichesComptable ($mois) {
     $req = "select idVisiteur, mois, montantValide, dateModif, id, libelle
 				from  fichefrais inner join Etat on ficheFrais.idEtat = Etat.id
@@ -310,6 +315,8 @@ class DataAccess extends CI_Model {
     return $lesFiches;
   }
 
+=======
+>>>>>>> correction_validation
 	/**
 	 * Calcule le montant total de la fiche pour un visiteur et un mois donnés
 	 *
