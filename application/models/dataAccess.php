@@ -196,6 +196,21 @@ class DataAccess extends CI_Model {
 		}
 	}
 
+  /**
+   * Valide une fiche de frais en modifiant son état de "Cl" à "VA"
+   * Ne fait rien si l'état initial n'est pas "CL"
+   *
+   * @param $idVisiteur
+   * @param $mois sous la forme aaaamm
+  */
+  public function valideFiche($idVisiteur,$mois){
+    //met à 'VA' son champs idEtat
+    $laFiche = $this->getLesInfosFicheFrais($idVisiteur,$mois);
+    if($laFiche['idEtat']=='CL'){
+        $this->majEtatFicheFrais($idVisiteur, $mois,'VA');
+    }
+  }
+
 	/**
 	 * Crée un nouveau frais hors forfait pour un visiteur un mois donné
 	 * à partir des informations fournies en paramètre
@@ -302,9 +317,10 @@ class DataAccess extends CI_Model {
 
   public function getFichesComptable ($mois) {
     $req = "select idVisiteur, mois, montantValide, dateModif, id, libelle
-				from  fichefrais inner join Etat on ficheFrais.idEtat = Etat.id
-        where mois = '$mois'
+				from  fichefrais inner join etat on ficheFrais.idEtat = etat.id
+        where idEtat= 'CL'
 				order by mois desc";
+        //where mois = '$mois' and idEtat= 'CL'
     $rs = $this->db->query($req);
     $lesFiches = $rs->result_array();
     return $lesFiches;

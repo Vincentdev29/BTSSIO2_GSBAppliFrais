@@ -61,7 +61,7 @@ class A_visiteur extends CI_Model {
     $dateFR = date("d/m/Y");
     $mois = $this->functionsLib->getMois($dateFR);
     $data['mesFiches'] = $this->dataAccess->getFichesComptable($mois);
-    $this->templates->load('t_visiteur', 'v_visMesFiches', $data);
+    $this->templates->load('t_visiteur', 'v_comptMesFiches', $data);
   }
 
 	/**
@@ -112,6 +112,19 @@ class A_visiteur extends CI_Model {
 		// TODO : intégrer une fonctionnalité d'impression PDF de la fiche
 
 	    $this->dataAccess->signeFiche($idVisiteur, $mois);
+	}
+
+  /**
+	 * Valide une fiche de frais en changeant son état
+	 *
+	 * @param $idVisiteur : l'id du visiteur
+	 * @param $mois : le mois de la fiche à signer
+	*/
+	public function valideFiche($idVisiteur, $mois)
+	{	// TODO : s'assurer que les paramètres reçus sont cohérents avec ceux mémorisés en session
+		// TODO : intégrer une fonctionnalité d'impression PDF de la fiche
+
+	    $this->dataAccess->valideFiche($idVisiteur, $mois);
 	}
 
 	/**
