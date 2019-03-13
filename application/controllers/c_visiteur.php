@@ -135,8 +135,6 @@ class C_visiteur extends CI_Controller {
 				// obtention des données postées
 				$lesFrais = $this->input->post('lesFrais');
 
-				// Avant modification des données, on vérifie que les données sont valides (les nombres sont entiers)
-				$patter = "";
 				foreach ($lesFrais as $key => $value) {
 					$this->a_visiteur->majForfait($idVisiteur, $mois, $lesFrais);
 					// ... et on revient en modification de la fiche
