@@ -20,7 +20,7 @@ class DataAccess extends CI_Model {
 	 * @return l'id, le nom et le prénom sous la forme d'un tableau associatif
 	*/
 	public function getInfosVisiteur($login, $mdp){
-		$req = "select visiteur.id as id, visiteur.nom as nom, visiteur.prenom as prenom
+		$req = "select visiteur.id as id, visiteur.nom as nom, visiteur.prenom as prenom, visiteur.statut as statut
 				from visiteur
 				where visiteur.login=? and visiteur.mdp=?";
 		$rs = $this->db->query($req, array ($login, $mdp));
@@ -196,6 +196,21 @@ class DataAccess extends CI_Model {
 		}
 	}
 
+  /**
+   * Valide une fiche de frais en modifiant son état de "Cl" à "VA"
+   * Ne fait rien si l'état initial n'est pas "CL"
+   *
+   * @param $idVisiteur
+   * @param $mois sous la forme aaaamm
+  */
+  public function valideFiche($idVisiteur,$mois){
+    //met à 'VA' son champs idEtat
+    $laFiche = $this->getLesInfosFicheFrais($idVisiteur,$mois);
+    if($laFiche['idEtat']=='CL'){
+        $this->majEtatFicheFrais($idVisiteur, $mois,'VA');
+    }
+  }
+
 	/**
 	 * Crée un nouveau frais hors forfait pour un visiteur un mois donné
 	 * à partir des informations fournies en paramètre
@@ -299,6 +314,17 @@ class DataAccess extends CI_Model {
 		$lesFiches = $rs->result_array();
 		return $lesFiches;
 	}
+
+  public function getFichesComptable ($mois) {
+    $req = "select idVisiteur, mois, montantValide, dateModif, id, libelle
+				from  fichefrais inner join etat on ficheFrais.idEtat = etat.id
+        where idEtat= 'CL'
+				order by mois desc";
+        //where mois = '$mois' and idEtat= 'CL'
+    $rs = $this->db->query($req);
+    $lesFiches = $rs->result_array();
+    return $lesFiches;
+  }
 
 	/**
 	 * Calcule le montant total de la fiche pour un visiteur et un mois donnés

@@ -48,7 +48,13 @@ class C_visiteur extends CI_Controller {
 				$this->session->unset_userdata('mois');
 
 				$idVisiteur = $this->session->userdata('idUser');
-				$this->a_visiteur->mesFiches($idVisiteur);
+
+				if($this->session->userdata('statut') == 'visiteur'){
+					$this->a_visiteur->mesFiches($idVisiteur);
+				}
+				else{
+					$this->a_visiteur->fichesComptable();
+				}
 			}
 			elseif ($action == 'deconnecter')	// deconnecter demandé : on active la fonction deconnecter du modèle authentif
 			{
@@ -100,6 +106,21 @@ class C_visiteur extends CI_Controller {
 
 				// ... et on revient à mesFiches
 				$this->a_visiteur->mesFiches($idVisiteur, "La fiche $mois a été signée. <br/>Pensez à envoyer vos justificatifs afin qu'elle soit traitée par le service comptable rapidement.");
+			}
+			elseif ($action == 'valideFiche') // valideFiche demandé : on active la fonction valideFiche du modèle visiteur ...
+			{ // TODO : contrôler la validité du second paramètre (mois de la fiche à modifier)
+				$this->load->model('a_visiteur');
+
+				// obtention du mois de la fiche à signer qui doit avoir été transmis
+				// en second paramètre
+				$mois = $params[0];
+				// obtention de l'id utilisateur courant et du mois concerné
+				$idVisiteur = $this->session->userdata('idUser');
+				$this->a_visiteur->valideFiche($idVisiteur, $mois);
+
+				// ... et on revient à mesFiches
+				$this->a_visiteur->mesFiches($idVisiteur, "La fiche $mois a été validée.");
+
 			}
 			elseif ($action == 'majForfait') // majFraisForfait demandé : on active la fonction majFraisForfait du modèle visiteur ...
 			{	// TODO : conrôler que l'obtention des données postées ne rend pas d'erreurs
