@@ -211,6 +211,21 @@ class DataAccess extends CI_Model {
     }
   }
 
+  /**
+   * Valide une fiche de frais en modifiant son état de "Cl" à "FR"
+   * Ne fait rien si l'état initial n'est pas "CL"
+   *
+   * @param $idVisiteur
+   * @param $mois sous la forme aaaamm
+  */
+  public function refuseFiche($idVisiteur,$mois){
+    //met à 'VA' son champs idEtat
+    $laFiche = $this->getLesInfosFicheFrais($idVisiteur,$mois);
+    if($laFiche['idEtat']=='CL'){
+        $this->majEtatFicheFrais($idVisiteur, $mois,'FR');
+    }
+  }
+
 	/**
 	 * Crée un nouveau frais hors forfait pour un visiteur un mois donné
 	 * à partir des informations fournies en paramètre

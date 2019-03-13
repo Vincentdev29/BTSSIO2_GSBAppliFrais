@@ -122,6 +122,26 @@ class C_visiteur extends CI_Controller {
 				$this->a_visiteur->mesFiches($idVisiteur, "La fiche $mois a été validée.");
 
 			}
+			elseif ($action == 'refuseFiche') // refuseFiche demandé : on active la fonction refuseFiche du modèle visiteur ...
+			{
+				$mois = $params[0];
+				$idVisiteur = $this->session->userdata('idUser');
+				if(!isset($_POST['motif'])){
+					$data['mois'] = $mois;
+					$data['id'] = $idVisiteur;
+					$this->templates->load('t_visiteur', 'v_comptRefuseFiche', $data);
+				}
+
+				$this->load->model('a_visiteur');
+
+				// obtention de l'id utilisateur courant et du mois concerné
+
+				$this->a_visiteur->refuseFiche($idVisiteur, $mois);
+
+				// ... et on revient à mesFiches
+				$this->a_visiteur->mesFiches($idVisiteur, "La fiche $mois a été refusée.");
+
+			}
 			elseif ($action == 'majForfait') // majFraisForfait demandé : on active la fonction majFraisForfait du modèle visiteur ...
 			{	// TODO : conrôler que l'obtention des données postées ne rend pas d'erreurs
 				// TODO : dans la dynamique de l'application, contrôler que l'on vient bien de modFiche

@@ -127,6 +127,16 @@ class A_visiteur extends CI_Model {
 	    $this->dataAccess->valideFiche($idVisiteur, $mois);
 	}
 
+  /**
+	 * Refuse une fiche de frais en changeant son état
+	 *
+	 * @param $idVisiteur : l'id du visiteur
+	 * @param $mois : le mois de la fiche à signer
+	*/
+  public function refuseFiche($idVisiteur, $mois)
+  {
+    $this->dataAccess->refuseFiche($idVisiteur, $mois);
+  }
 	/**
 	 * Modifie les quantités associées aux frais forfaitisés dans une fiche donnée
 	 *
