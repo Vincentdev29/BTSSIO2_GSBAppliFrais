@@ -218,11 +218,13 @@ class DataAccess extends CI_Model {
    * @param $idVisiteur
    * @param $mois sous la forme aaaamm
   */
-  public function refuseFiche($idVisiteur,$mois){
+  public function refuseFiche($idVisiteur,$mois, $motif){
     //met à 'VA' son champs idEtat
     $laFiche = $this->getLesInfosFicheFrais($idVisiteur,$mois);
+
     if($laFiche['idEtat']=='CL'){
         $this->majEtatFicheFrais($idVisiteur, $mois,'FR');
+        $this->majMotifFicheFrais($idVisiteur, $mois, $motif);
     }
   }
 
@@ -315,6 +317,20 @@ class DataAccess extends CI_Model {
 		$this->db->simple_query($req);
 	}
 
+  /**
+	 * Modifie le motif et la date de modification d'une fiche de frais
+	 *
+	 * @param $idVisiteur
+	 * @param $mois sous la forme aaaamm
+	 * @param $motif : le nouveau motif de la fiche
+	 */
+  public function majMotifFicheFrais($idVisiteur, $mois,$motif){
+    $req = "update ficheFrais
+				set motif = '$motif', dateModif = now()
+				where fichefrais.idvisiteur ='$idVisiteur' and fichefrais.mois = '$mois'";
+    $this->db->simple_query($req);
+  }
+
 	/**
 	 * Obtient toutes les fiches (sans détail) d'un visiteur donné
 	 *
@@ -333,7 +349,7 @@ class DataAccess extends CI_Model {
   public function getFichesComptable ($mois) {
     $req = "select idVisiteur, mois, montantValide, dateModif, id, libelle
 				from  fichefrais inner join etat on ficheFrais.idEtat = etat.id
-        where idEtat= 'CL'
+        where idEtat= 'CL' AND mois = '$mois'
 				order by mois desc";
         //where mois = '$mois' and idEtat= 'CL'
     $rs = $this->db->query($req);

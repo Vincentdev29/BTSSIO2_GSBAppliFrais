@@ -54,12 +54,13 @@ class A_visiteur extends CI_Model {
 		$this->templates->load('t_visiteur', 'v_visMesFiches', $data);
 	}
 
-  public function fichesComptable(){
+  public function fichesComptable($message=null){
     // chargement du modèle contenant les fonctions génériques
 		$this->load->model('functionsLib');
 
     $dateFR = date("d/m/Y");
     $mois = $this->functionsLib->getMois($dateFR);
+    $data['notify'] = $message;
     $data['mesFiches'] = $this->dataAccess->getFichesComptable($mois);
     $this->templates->load('t_visiteur', 'v_comptMesFiches', $data);
   }
@@ -133,10 +134,17 @@ class A_visiteur extends CI_Model {
 	 * @param $idVisiteur : l'id du visiteur
 	 * @param $mois : le mois de la fiche à signer
 	*/
-  public function refuseFiche($idVisiteur, $mois)
+  public function motifRefus($idVisiteur, $mois)
   {
-    $this->dataAccess->refuseFiche($idVisiteur, $mois);
+    $data['idVisiteur'] = $idVisiteur;
+    $data['mois'] = $mois;
+    $this->templates->load('t_visiteur', 'v_comptRefuseFiche', $data);
   }
+
+  public function refuseFiche($idVisiteur, $mois, $motif){
+    $this->dataAccess->refuseFiche($idVisiteur, $mois, $motif);
+  }
+
 	/**
 	 * Modifie les quantités associées aux frais forfaitisés dans une fiche donnée
 	 *

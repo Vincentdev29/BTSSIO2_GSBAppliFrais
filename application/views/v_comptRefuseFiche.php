@@ -3,11 +3,11 @@
 ?>
 <div id="contenu">
   <?php
-    $action = 'c_visiteur/refuseFiche/'.$mois;
+    $action = base_url("c_visiteur/refuseFiche");
   ?>
-  <form action=<?= $mois ?> method="post">
+  <form action=<?= $action ?> method="post">
     <label for="motif">Motif du refus</label>
     <textarea name="motif" rows="8" cols="80"></textarea>
-    <input type="submit">
+    <input type="submit" required="required">
   </form>
 </div>
