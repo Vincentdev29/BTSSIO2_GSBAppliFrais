@@ -5,9 +5,9 @@
   <?php
     $action = base_url("c_visiteur/refuseFiche");
   ?>
-  <form action=<?= $action ?> method="post">
-    <label for="motif">Motif du refus</label>
-    <textarea name="motif" rows="8" cols="80"></textarea>
+  <form action=<?= $action ?> method="post" style='text-align:center'>
+    <label for="motif">Motif du refus</label><br>
+    <textarea name="motif" rows="8" cols="80" style='resize : none;'></textarea><br>
     <input type="submit" required="required">
   </form>
 </div>

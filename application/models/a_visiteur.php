@@ -33,8 +33,13 @@ class A_visiteur extends CI_Model {
 		foreach ($lesMois as $unMois){
 			if(!$this->dataAccess->ExisteFiche($idVisiteur, $unMois)) $this->dataAccess->creeFiche($idVisiteur, $unMois);
 		}
-		// envoie de la vue accueil du visiteur
-		$this->templates->load('t_visiteur', 'v_visAccueil');
+		// envoie de la vue accueil du visiteur ou comptable
+    if($this->session->userdata('statut') == 'visiteur'){
+      $this->templates->load('t_visiteur', 'v_visAccueil');
+    }
+    else{
+      $this->templates->load('t_visiteur', 'v_comptAccueil');
+    }
 	}
 
 	/**
