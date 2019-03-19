@@ -62,7 +62,6 @@ class A_visiteur extends CI_Model {
   public function fichesComptable($message=null){
     // chargement du modèle contenant les fonctions génériques
 		$this->load->model('functionsLib');
-
     $dateFR = date("d/m/Y");
     $mois = $this->functionsLib->getMois($dateFR);
     $data['notify'] = $message;

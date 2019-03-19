@@ -25,7 +25,6 @@
 				$modLink = '';
 				$valideLink = '';
 				$refuseLink = '';
-
 				$modLink = anchor('c_visiteur/modFiche/'.$uneFiche['mois'].'/'.$uneFiche['idVisiteur'], 'modifier',  'title="Modifier la fiche"');
 				$valideLink = anchor('c_visiteur/valideFiche/'.$uneFiche['mois'].'/'.$uneFiche['idVisiteur'], 'valider',  'title="Valider la fiche"  onclick="return confirm(\'Voulez-vous vraiment valider cette fiche ?\');"');
 				$refuseLink = anchor('c_visiteur/motifRefus/'.$uneFiche['mois'].'/'.$uneFiche['idVisiteur'], 'refuser',  'title="Refuser la fiche"  onclick="return confirm(\'Voulez-vous vraiment refuser cette fiche ?\');"');
@@ -33,8 +32,8 @@
 				echo
 				'<tr>
 					<td class="date">'.anchor('c_visiteur/voirFiche/'.$uneFiche['mois'].'/'.$uneFiche['idVisiteur'], $uneFiche['mois'],  'title="Consulter la fiche"').'</td>
-					<td> </td>
-					<td> </td>
+					<td>'.$uneFiche['nom'].'</td>
+					<td>'.$uneFiche['prenom'].'</td>
 					<td class="montant">'.$uneFiche['montantValide'].'</td>
 					<td class="date">'.$uneFiche['dateModif'].'</td>
 					<td class="action">'.$modLink.'</td>

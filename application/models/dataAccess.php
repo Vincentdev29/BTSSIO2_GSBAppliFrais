@@ -346,9 +346,14 @@ class DataAccess extends CI_Model {
 		return $lesFiches;
 	}
 
+  /**
+	 * Obtient toutes les fiches (sans détail) pour un comptable
+	 *
+	 * @param $idVisiteur
+	*/
   public function getFichesComptable ($mois) {
-    $req = "select idVisiteur, mois, montantValide, dateModif, id, libelle
-				from  fichefrais inner join etat on ficheFrais.idEtat = etat.id
+    $req = "select nom, prenom, idVisiteur, mois, montantValide, dateModif, e.id, libelle
+        from (etat as e inner join fichefrais as ff on e.id = ff.idEtat) inner join visiteur as v on ff.idVisiteur = v.id
         where idEtat= 'CL' AND mois = '$mois'
 				order by mois desc";
         //where mois = '$mois' and idEtat= 'CL'
