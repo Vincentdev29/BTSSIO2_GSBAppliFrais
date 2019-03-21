@@ -46,10 +46,9 @@ class A_visiteur extends CI_Model {
 	 * Liste les fiches existantes du visiteur connecté et
 	 * donne accès aux fonctionnalités associées
 	 *
-	 * @param $idVisiteur : l'id du visiteur
 	 * @param $message : message facultatif destiné à notifier l'utilisateur du résultat d'une action précédemment exécutée
 	*/
-	public function mesFiches ($idVisiteur, $message=null)
+	public function mesFiches ($message = null)
 	{	// TODO : s'assurer que les paramètres reçus sont cohérents avec ceux mémorisés en session
 
 		$idVisiteur = $this->session->userdata('idUser');
@@ -59,6 +58,12 @@ class A_visiteur extends CI_Model {
 		$this->templates->load('t_visiteur', 'v_visMesFiches', $data);
 	}
 
+  /**
+	 * Liste les fiches cloturées pour le comptables
+	 * donne accès aux fonctionnalités associées
+	 *
+	 * @param $message : message facultatif destiné à notifier l'utilisateur du résultat d'une action précédemment exécutée
+	*/
   public function fichesComptable($message=null){
     // chargement du modèle contenant les fonctions génériques
 		$this->load->model('functionsLib');

@@ -47,10 +47,8 @@ class C_visiteur extends CI_Controller {
 				// on n'est pas en mode "modification d'une fiche"
 				$this->session->unset_userdata('mois');
 
-				$idVisiteur = $this->session->userdata('idUser');
-
 				if($this->session->userdata('statut') == 'visiteur'){
-					$this->a_visiteur->mesFiches($idVisiteur);
+					$this->a_visiteur->mesFiches();
 				}
 				else{
 					$this->a_visiteur->fichesComptable();
@@ -103,7 +101,7 @@ class C_visiteur extends CI_Controller {
 				$this->a_visiteur->signeFiche($idVisiteur, $mois);
 
 				// ... et on revient à mesFiches
-				$this->a_visiteur->mesFiches($idVisiteur, "La fiche $mois a été signée. <br/>Pensez à envoyer vos justificatifs afin qu'elle soit traitée par le service comptable rapidement.");
+				$this->a_visiteur->mesFiches("La fiche $mois a été signée. <br/>Pensez à envoyer vos justificatifs afin qu'elle soit traitée par le service comptable rapidement.");
 			}
 			elseif ($action == 'valideFiche') // valideFiche demandé : on active la fonction valideFiche du modèle visiteur ...
 			{ // TODO : contrôler la validité du second paramètre (mois de la fiche à modifier)
