@@ -196,6 +196,38 @@ class DataAccess extends CI_Model {
 		}
 	}
 
+  /**
+   * Valide une fiche de frais en modifiant son état de "Cl" à "VA"
+   * Ne fait rien si l'état initial n'est pas "CL"
+   *
+   * @param $idVisiteur
+   * @param $mois sous la forme aaaamm
+  */
+  public function valideFiche($idVisiteur,$mois){
+    //met à 'VA' son champs idEtat
+    $laFiche = $this->getLesInfosFicheFrais($idVisiteur,$mois);
+    if($laFiche['idEtat']=='CL'){
+        $this->majEtatFicheFrais($idVisiteur, $mois,'VA');
+    }
+  }
+
+  /**
+   * Valide une fiche de frais en modifiant son état de "Cl" à "FR"
+   * Ne fait rien si l'état initial n'est pas "CL"
+   *
+   * @param $idVisiteur
+   * @param $mois sous la forme aaaamm
+  */
+  public function refuseFiche($idVisiteur,$mois, $motif){
+    //met à 'VA' son champs idEtat
+    $laFiche = $this->getLesInfosFicheFrais($idVisiteur,$mois);
+
+    if($laFiche['idEtat']=='CL'){
+        $this->majEtatFicheFrais($idVisiteur, $mois,'FR');
+        $this->majMotifFicheFrais($idVisiteur, $mois, $motif);
+    }
+  }
+
 	/**
 	 * Crée un nouveau frais hors forfait pour un visiteur un mois donné
 	 * à partir des informations fournies en paramètre
@@ -285,6 +317,20 @@ class DataAccess extends CI_Model {
 		$this->db->simple_query($req);
 	}
 
+  /**
+	 * Modifie le motif et la date de modification d'une fiche de frais
+	 *
+	 * @param $idVisiteur
+	 * @param $mois sous la forme aaaamm
+	 * @param $motif : le nouveau motif de la fiche
+	 */
+  public function majMotifFicheFrais($idVisiteur, $mois,$motif){
+    $req = "update ficheFrais
+				set motif = '$motif', dateModif = now()
+				where fichefrais.idvisiteur ='$idVisiteur' and fichefrais.mois = '$mois'";
+    $this->db->simple_query($req);
+  }
+
 	/**
 	 * Obtient toutes les fiches (sans détail) d'un visiteur donné
 	 *
@@ -300,11 +346,17 @@ class DataAccess extends CI_Model {
 		return $lesFiches;
 	}
 
+  /**
+	 * Obtient toutes les fiches (sans détail) pour un comptable
+	 *
+	 * @param $idVisiteur
+	*/
   public function getFichesComptable ($mois) {
-    $req = "select idVisiteur, mois, montantValide, dateModif, id, libelle
-				from  fichefrais inner join Etat on ficheFrais.idEtat = Etat.id
-        where mois = '$mois'
+    $req = "select nom, prenom, idVisiteur, mois, montantValide, dateModif, e.id, libelle
+        from (etat as e inner join fichefrais as ff on e.id = ff.idEtat) inner join visiteur as v on ff.idVisiteur = v.id
+        where idEtat= 'CL' AND mois = '$mois'
 				order by mois desc";
+        //where mois = '$mois' and idEtat= 'CL'
     $rs = $this->db->query($req);
     $lesFiches = $rs->result_array();
     return $lesFiches;

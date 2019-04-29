@@ -47,10 +47,8 @@ class C_visiteur extends CI_Controller {
 				// on n'est pas en mode "modification d'une fiche"
 				$this->session->unset_userdata('mois');
 
-				$idVisiteur = $this->session->userdata('idUser');
-
 				if($this->session->userdata('statut') == 'visiteur'){
-					$this->a_visiteur->mesFiches($idVisiteur);
+					$this->a_visiteur->mesFiches();
 				}
 				else{
 					$this->a_visiteur->fichesComptable();
@@ -66,14 +64,12 @@ class C_visiteur extends CI_Controller {
 
 				$this->load->model('a_visiteur');
 
-				// obtention du mois de la fiche à modifier qui doit avoir été transmis
-				// en second paramètre
+				// obtention de l'id utilisateur courant et du mois concerné
 				$mois = $params[0];
-				// mémorisation du mode modification en cours
-				// on mémorise le mois de la fiche en cours de modification
+				$idVisiteur = $params[1];
+
 				$this->session->set_userdata('mois', $mois);
-				// obtention de l'id utilisateur courant
-				$idVisiteur = $this->session->userdata('idUser');
+				$this->session->set_userdata('idUser', $idVisiteur);
 
 				$this->a_visiteur->voirFiche($idVisiteur, $mois);
 			}
@@ -82,14 +78,12 @@ class C_visiteur extends CI_Controller {
 
 				$this->load->model('a_visiteur');
 
-				// obtention du mois de la fiche à modifier qui doit avoir été transmis
-				// en second paramètre
+				// obtention de l'id utilisateur courant et du mois concerné
 				$mois = $params[0];
-				// mémorisation du mode modification en cours
-				// on mémorise le mois de la fiche en cours de modification
+				$idVisiteur = $params[1];
+
 				$this->session->set_userdata('mois', $mois);
-				// obtention de l'id utilisateur courant
-				$idVisiteur = $this->session->userdata('idUser');
+				$this->session->set_userdata('idUser', $idVisiteur);
 
 				$this->a_visiteur->modFiche($idVisiteur, $mois);
 			}
@@ -97,15 +91,63 @@ class C_visiteur extends CI_Controller {
 			{	// TODO : contrôler la validité du second paramètre (mois de la fiche à modifier)
 				$this->load->model('a_visiteur');
 
-				// obtention du mois de la fiche à signer qui doit avoir été transmis
-				// en second paramètre
-				$mois = $params[0];
 				// obtention de l'id utilisateur courant et du mois concerné
-				$idVisiteur = $this->session->userdata('idUser');
+				$mois = $params[0];
+				$idVisiteur = $params[1];
+
+				$this->session->set_userdata('mois', $mois);
+				$this->session->set_userdata('idUser', $idVisiteur);
+
 				$this->a_visiteur->signeFiche($idVisiteur, $mois);
 
 				// ... et on revient à mesFiches
-				$this->a_visiteur->mesFiches($idVisiteur, "La fiche $mois a été signée. <br/>Pensez à envoyer vos justificatifs afin qu'elle soit traitée par le service comptable rapidement.");
+				$this->a_visiteur->mesFiches("La fiche $mois a été signée. <br/>Pensez à envoyer vos justificatifs afin qu'elle soit traitée par le service comptable rapidement.");
+			}
+			elseif ($action == 'valideFiche') // valideFiche demandé : on active la fonction valideFiche du modèle visiteur ...
+			{ // TODO : contrôler la validité du second paramètre (mois de la fiche à modifier)
+				$this->load->model('a_visiteur');
+
+				// obtention de l'id utilisateur courant et du mois concerné
+				$mois = $params[0];
+				$idVisiteur = $params[1];
+
+				$this->session->set_userdata('mois', $mois);
+				$this->session->set_userdata('idUser', $idVisiteur);
+
+				$this->a_visiteur->valideFiche($idVisiteur, $mois);
+
+				// ... et on revient à mesFiches
+				$this->a_visiteur->fichesComptable("La fiche $mois a été validée.");
+
+			}
+			elseif ($action == 'motifRefus') // motifRefus demandé : on active la fonction motifRefus du modèle visiteur ...
+			{
+
+				// obtention de l'id utilisateur courant et du mois concerné
+				$mois = $params[0];
+				$idVisiteur = $params[1];
+
+				$this->session->set_userdata('mois', $mois);
+				$this->session->set_userdata('idUser', $idVisiteur);
+
+				$this->load->model('a_visiteur');
+
+				$this->a_visiteur->motifRefus($idVisiteur, $mois);
+			}
+			elseif ($action == 'refuseFiche') // refuseFiche demandé : on active la fonction refuseFiche du modèle visiteur ...
+			{
+				$this->load->model('a_visiteur');
+
+				$idVisiteur = $this->session->userdata('idUser');
+				$mois = $this->session->userdata('mois');
+
+				$motif = $this->input->post('motif');
+
+				$this->a_visiteur->refuseFiche($idVisiteur, $mois, $motif);
+
+				// ... et on revient à mesFiches
+				$this->a_visiteur->fichesComptable("La fiche $mois a été refusée.");
+
 			}
 			elseif ($action == 'majForfait') // majFraisForfait demandé : on active la fonction majFraisForfait du modèle visiteur ...
 			{	// TODO : conrôler que l'obtention des données postées ne rend pas d'erreurs
@@ -120,8 +162,6 @@ class C_visiteur extends CI_Controller {
 				// obtention des données postées
 				$lesFrais = $this->input->post('lesFrais');
 
-				// Avant modification des données, on vérifie que les données sont valides (les nombres sont entiers)
-				$patter = "";
 				foreach ($lesFrais as $key => $value) {
 					$this->a_visiteur->majForfait($idVisiteur, $mois, $lesFrais);
 					// ... et on revient en modification de la fiche
