@@ -241,7 +241,7 @@ class DataAccess extends CI_Model {
 	public function creeLigneHorsForfait($idVisiteur,$mois,$libelle,$date,$montant){
 		$this->load->model('functionsLib');
 
-		$dateFr = $this->functionsLib->dateFrancaisVersAnglais($date);
+		$dateFr = $this->functionsLib->dateNoFormat($date);
 		$req = "insert into lignefraishorsforfait
 				values('','$idVisiteur','$mois','$libelle','$dateFr','$montant')";
 		$this->db->simple_query($req);

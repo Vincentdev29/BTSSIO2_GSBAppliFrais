@@ -22,7 +22,7 @@
 						echo
 						'<p>
 							<label for="'.$idFrais.'">'.$libelle.'</label>
-							<input type="text" id="'.$idFrais.'" name="lesFrais['.$idFrais.']" size="10" maxlength="5" value="'.$quantite.'" />
+							<input type="number" min="0" id="'.$idFrais.'" name="lesFrais['.$idFrais.']" size="10" maxlength="5" value="'.$quantite.'" />
 						</p>
 						';
 					}
@@ -76,16 +76,16 @@
 			<fieldset>
 				<legend>Nouvel élément hors forfait</legend>
 				<p>
-					<label for="txtDateHF">Date (jj/mm/aaaa): </label>
-					<input type="text" id="txtDateHF" name="dateFrais" size="10" maxlength="10" value=""  />
+					<label for="txtDateHF">Date (jj/mm/aaaa) : </label>
+					<input type="date" required id="txtDateHF" name="dateFrais" size="10" maxlength="10" value=""  />
 				</p>
 				<p>
-					<label for="txtLibelleHF">Libellé</label>
-					<input type="text" id="txtLibelleHF" name="libelle" size="60" maxlength="256" value="" />
+					<label for="txtLibelleHF">Libellé : </label>
+					<input type="text" required id="txtLibelleHF" name="libelle" size="60" maxlength="256" value="" />
 				</p>
 				<p>
 					<label for="txtMontantHF">Montant : </label>
-					<input type="text" id="txtMontantHF" name="montant" size="10" maxlength="10" value="" />
+					<input type="number" step="0.01" required min="0" id="txtMontantHF" name="montant" size="10" maxlength="10" value="" />
 				</p>
 			</fieldset>
 		</div>
