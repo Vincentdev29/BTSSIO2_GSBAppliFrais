@@ -39,11 +39,11 @@ Il serait judicieux d'ajouter un onglet à la page d'accueil comptable pour qu'i
 
 **Page de connexion**
 
-![page connexion](./documentation/image/page connexion.png)
+![page connexion](./documentation/image/page_connexion.png)
 
 **Page d'accueil**
 
-![page d'accueil](./documentation/image/page d'accueil.png)
+![page d'accueil](./documentation/image/page_d'accueil.png)
 
 **Page de gestion des frais**
 
